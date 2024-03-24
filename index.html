@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<h1>Vytvoření události s cateringem</h1>
+<form id="cateringForm">
+    <label for="eventName">Název události:</label>
+    <input type="text" id="eventName" name="eventName" required>
+    <label for="guestCount">Počet hostů:</label>
+    <input type="number" id="guestCount" name="guestCount" required>
+    <label for="cateringType">Typ cateringu:</label>
+    <select id="cateringType" name="cateringType">
+        <option value="just_food">Just Food</option>
+        <option value="your_mama">Your Mama</option>
+        <option value="flavour_haven">Flavour Haven</option>
+    </select>
+    <button type="submit">Vytvořit událost</button>
+</form>
+
+<div id="eventResult"></div>
+
+<script>
+    document.getElementById("cateringForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const eventName = document.getElementById("eventName").value;
+        const guestCount = document.getElementById("guestCount").value;
+        const cateringType = document.getElementById("cateringType").value;
+
+        /*takhle odešlu data na server pro zpracování a zobrazení výsledku*/
+
+    fetch('/create_event', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            eventName: eventName,
+            guestCount: guestCount,
+            cateringType: cateringType
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+    document.getElementById("eventResult").innerText = data.eventDescription;
+    })
+    .catch((error) => {
+    console.error('Error:', error);
+    });
+}); 
+</script>
+</body>
+</html>
